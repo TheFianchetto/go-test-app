@@ -1,0 +1,42 @@
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Go workspace & build artifacts
+/bin/
+/pkg/
+
+# Dependency directories (optional if you are using Go modules)
+vendor/
+
+# Logs and debugging
+*.log
+*.out
+*.test
+
+# IDE/editor specific files
+.vscode/
+.idea/
+*.iml
+
+# Go test binaries
+*_test/
+
+# Environment files
+.env
+.env.local
+
+# Coverage files
+coverage.out
+
+# Go module cache (only if you are not using Go modules)
+/go/
+
+# macOS & Linux system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+Desktop.ini
