@@ -6,13 +6,14 @@ Requirements:
 - Go 1.23
 - Goose
 - Sqlc
-- GORM
 
 ## Goals to evaluate
 
 - Data Abstraction (ORM)
+  - GORM vs SQLc
 - DB Migrations 
-- SQLc vs GORM
+  - goose
+  - gomigrate
 - DBO (Database Owners) can be done in SQLc
 - go 1.23 webserver 
 
@@ -45,6 +46,7 @@ sqlc generate
 ## Helpful Articles:
 
 - https://dev.to/karanpratapsingh/connecting-to-postgresql-using-gorm-24fj
+- https://www.youtube.com/watch?v=VX6KzpjaPp8&t=629s
 
 
 ## Env
