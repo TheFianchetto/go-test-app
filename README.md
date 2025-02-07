@@ -2,6 +2,12 @@
 
 Trying to POC GoLang with various ORM's and migration tooling
 
+Requirements:
+- Go 1.23
+- Goose
+- Sqlc
+- GORM
+
 ## Goals to evaluate
 
 - Data Abstraction (ORM)
@@ -19,6 +25,22 @@ Trying to POC GoLang with various ORM's and migration tooling
 - GORM works pretty nice but yeah having performance impact sucks
 
 
+## Commands
+
+```bash
+# Create a Migration Files
+goose create -s migration_name sql
+
+# Migrate All Changes 
+goose up
+
+# Roll Back Changes
+goose down
+
+# Generate New ORM Files / Queries
+sqlc generate 
+
+```
 
 ## Helpful Articles:
 
