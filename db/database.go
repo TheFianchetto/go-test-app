@@ -9,8 +9,9 @@ import (
 
 // ConnectDB initializes the database connection
 func ConnectDB() *gorm.DB {
-	dsn := "host=localhost user=postgres password= dbname=gotester port=5432 sslmode=disable"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	dbURL := "postgres://postgres:@localhost:5432/go_test_db?sslmode=disable"
+	db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
+
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
