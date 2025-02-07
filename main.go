@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/TheFianchetto/go-test-app/db"
 	_ "github.com/lib/pq"
@@ -27,14 +28,35 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// Example goroutine 1: Print a message every second
+	go func() {
+		for {
+			fmt.Println("Goroutine 1: Running...")
+			time.Sleep(1 * time.Second)
+		}
+	}()
+
+	// Example goroutine 2: Print a different message every two seconds
+	go func() {
+		for {
+			fmt.Println("Goroutine 2: Running...")
+			time.Sleep(2 * time.Second)
+		}
+	}()
+
 	// Basic web server for testing user actions
 	// GET /users
 	http.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
 		users, err := queries.ListUsers(ctx)
 		if err != nil {
 			log.Fatal(err)
 		}
 		fmt.Fprintf(w, "Users: %v", users)
+		defer func() {
+			duration := time.Since(start)
+			fmt.Printf("Served request in %v\n", duration)
+		}()
 	})
 
 	// GET /user/:id
