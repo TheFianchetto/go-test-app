@@ -1,31 +1,30 @@
 package main
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
 	"log"
 
 	"github.com/TheFianchetto/go-test-app/db"
-	"github.com/TheFianchetto/go-test-app/models"
+	_ "github.com/lib/pq"
 )
 
 func main() {
-	// Connect to DB
-	database := db.ConnectDB()
+	connStr := "postgres://postgres:@localhost:5432/go_test_db?sslmode=disable"
+	dbConn, err := sql.Open("postgres", connStr)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer dbConn.Close()
 
-	// print all users in db
-	fmt.Print("All users in db: " + "\n" + "ID | Name | Email | Age" + "\n")
-	var users []models.User
-	database.Find(&users)
-	for _, user := range users {
-		fmt.Println(user.ID, user.Name, user.Email, user.Age)
+	queries := db.New(dbConn)
+	ctx := context.Background()
+
+	user, err := queries.GetUserByID(ctx, 1)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	// Create a new user (ActiveRecord-like)
-	user := &models.User{Name: "Alice", Email: "alice@example.com", Age: 25}
-
-	if err := user.Create(database); err != nil {
-		log.Fatalf("User creation failed: %v", err)
-	}
-
-	fmt.Println("User created:", user)
+	fmt.Println(user.Role, "User:", user.Name, user.Email)
 }
