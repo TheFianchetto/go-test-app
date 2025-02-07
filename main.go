@@ -12,13 +12,6 @@ func main() {
 	// Connect to DB
 	database := db.ConnectDB()
 
-	// Check if the users table exists
-	if !database.Migrator().HasTable(&models.User{}) {
-		log.Fatalf("Users table does not exist")
-	} else {
-		fmt.Println("Users table exists")
-	}
-
 	// print all users in db
 	fmt.Print("All users in db: " + "\n" + "ID | Name | Email | Age" + "\n")
 	var users []models.User
