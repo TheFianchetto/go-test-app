@@ -32,3 +32,18 @@ GOOSE_DRIVER=postgres
 GOOSE_DBSTRING=postgres://user:pass@localhost:5432/DB_NAME?sslmode=disable
 GOOSE_MIGRATION_DIR=./db/migrations
 ```
+
+
+## Testing Requests
+
+```bash
+# List all Users
+curl -X GET http://localhost:8080/users
+
+# Get user by ID
+curl -X GET http://localhost:8080/user/1
+
+# Create User
+curl -X POST http://localhost:8080/user -d "name=John Doe" -d "email=johndoe@example.com"
+
+```
