@@ -8,10 +8,11 @@ package db
 import (
 	"context"
 	"database/sql"
+	"time"
 )
 
 const createUser = `-- name: CreateUser :one
-INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id, name, email, age, created_at, updated_at, role
+INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id, name, email, age, created_at, updated_at, role, username
 `
 
 type CreateUserParams struct {
@@ -30,6 +31,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.Role,
+		&i.Username,
 	)
 	return i, err
 }
@@ -47,9 +49,19 @@ const getUserByEmail = `-- name: GetUserByEmail :one
 SELECT id, name, email, age, created_at, updated_at, role FROM users WHERE email = $1
 `
 
-func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error) {
+type GetUserByEmailRow struct {
+	ID        int32
+	Name      string
+	Email     string
+	Age       sql.NullInt32
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	Role      string
+}
+
+func (q *Queries) GetUserByEmail(ctx context.Context, email string) (GetUserByEmailRow, error) {
 	row := q.db.QueryRowContext(ctx, getUserByEmail, email)
-	var i User
+	var i GetUserByEmailRow
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
@@ -66,9 +78,19 @@ const getUserByID = `-- name: GetUserByID :one
 SELECT id, name, email, age, created_at, updated_at, role FROM users WHERE id = $1
 `
 
-func (q *Queries) GetUserByID(ctx context.Context, id int32) (User, error) {
+type GetUserByIDRow struct {
+	ID        int32
+	Name      string
+	Email     string
+	Age       sql.NullInt32
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	Role      string
+}
+
+func (q *Queries) GetUserByID(ctx context.Context, id int32) (GetUserByIDRow, error) {
 	row := q.db.QueryRowContext(ctx, getUserByID, id)
-	var i User
+	var i GetUserByIDRow
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
@@ -85,15 +107,25 @@ const listUsers = `-- name: ListUsers :many
 SELECT id, name, email, age, created_at, updated_at, role FROM users ORDER BY id
 `
 
-func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
+type ListUsersRow struct {
+	ID        int32
+	Name      string
+	Email     string
+	Age       sql.NullInt32
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	Role      string
+}
+
+func (q *Queries) ListUsers(ctx context.Context) ([]ListUsersRow, error) {
 	rows, err := q.db.QueryContext(ctx, listUsers)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []User
+	var items []ListUsersRow
 	for rows.Next() {
-		var i User
+		var i ListUsersRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,

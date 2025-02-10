@@ -15,3 +15,7 @@ SELECT id, name, email, age, created_at, updated_at, role FROM users ORDER BY id
 
 -- name: GetUserByEmail :one
 SELECT id, name, email, age, created_at, updated_at, role FROM users WHERE email = $1;
+
+
+--- name: GetUserByUsername :many
+SELECT id, name, email, age, created_at, updated_at, role FROM users WHERE username = $1;

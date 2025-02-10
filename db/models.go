@@ -17,4 +17,5 @@ type User struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	Role      string
+	Username  string
 }
