@@ -28,6 +28,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// test
 	// Example goroutine 1: Print a message every second
 	go func() {
 		for {
